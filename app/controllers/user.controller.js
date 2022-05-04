@@ -38,22 +38,41 @@ const getUserById = async(req, res) => {
     }
 }
 
-const getUserByPasswordAndMail = async(req, res) => {
-    const password = req.body.password;
-    const email = req.body.email;
+const getByEmailPassword = async(req, res) => {
+    const{
+        password ,
+        email,
+    }=req.body;
+// email="dfghgfdsfasfg@wrew"
+// password="sadsfgfhgfdf"
+//password ריק-למה?
+console.log(email);
+console.log(password);
+const users=getAllusers();
     try {
         console.log("hi i am in get user by password and email");
-        const user = await User.findOne({email:email},{password:password})
+        
+         
+        //  const e = "shani3134376@gmail.com";
+        //  console.log(e);
+        console.log(password);
+        console.log(users);
+        //לא ידוע אם מקבל מה- GETALLUSERSS כלומר אם ה USERS מלא
+        const user = await users.find(u => u.passwordUser === password && u.emailUser == "shani3134376@gmail.com");
+        console.log(user);
         if (!user)
-            res.status(404).send({ message: "Not found user with password and email " + password +" "+email });
+            res.status(404).send({ message: "Not found user with password and email " + password +" " });
         else res.send(true);
     } catch {
         res
             .status(500)
-            .send({ message: "Error retrieving user with password and email " + password+" "+email });
+            .send({ message: "Error retrieving user with password and email " + password+" "});
     }
 }
-
+// const findUser = (username, password) => {
+//     const user = users.find(u => u.username === username && u.password === password);
+//     return user;
+// }
 const getAllusers = async(req, res) => {
     try {
         console.log("hi i am in getAllUsers");
@@ -113,7 +132,7 @@ const deleteUserById = async(req, res) => {
 module.exports= {
     addOneUser,
     getUserById,
-    getUserByPasswordAndMail,
+    getByEmailPassword,
     getAllusers,
     updateUser,
     deleteUserById,
